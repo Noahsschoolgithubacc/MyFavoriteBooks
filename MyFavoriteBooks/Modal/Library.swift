@@ -28,7 +28,43 @@ class Library: ObservableObject {
                 .flatMap { $0.value}
         }
     }
-    @Published var booksCache: [Book] = [
+    
+    
+    // it sorts books, also updates BookCache
+    func sortBooks() {
+        booksCache =
+        sortedBooks
+            .sorted {$1.key == .finished}
+            .flatMap { $0.value }
+        
+        objectWillChange.send()
+    }
+    
+    // it adds a new book
+    func addNewBook(_ book: Book, image: Image?) {
+        booksCache.insert(book, at: 0)
+        images[book] = image
+    }
+    
+    // it deletes books
+    func deleteBook(atOffsets offsets: IndexSet, section: Section) {
+        let booksBeforeDeletion = booksCache
+        
+        sortedBooks[section]?.remove(atOffsets: offsets)
+        
+        for change in booksCache.difference(from: booksBeforeDeletion) {
+            if case .remove(_, let deletedBook, _) = change {
+                images[deletedBook] = nil
+            }
+        }
+    }
+    
+    func moveBooks(oldOffSets: IndexSet, newOffSet: Int, section: Section) {
+        sortedBooks[section]?.move(fromOffsets: oldOffSets, toOffset: newOffSet)
+    }
+    
+    
+    @Published private var booksCache: [Book] = [
         .init(title: "Gregor the Overlander", author: "Suzanne Collins", microReview: "10/10"),
         .init(title: "Gregor and the Prophecy of Bane", author: "Suzanne Collins", microReview: "10/10"),
         .init(title: "Gregor and the Curse of the Warmbloods", author: "Suzanne Collins", microReview: "10/10"),
@@ -52,8 +88,13 @@ class Library: ObservableObject {
         if let gregor3 = booksCache.first(where: { $0.title == "gregor3"}) {
             images[gregor3] = Image("gregor3")
         }
+        if let gregor4 = booksCache.first(where: { $0.title == "gregor4"}) {
+            images[gregor4] = Image("gregor4")
+        }
+        if let gregor5 = booksCache.first(where: { $0.title == "gregor5"}) {
+            images[gregor5] = Image("gregor5")
+        }
     }
-    
 }
 
 // defines the possible sections in the library
