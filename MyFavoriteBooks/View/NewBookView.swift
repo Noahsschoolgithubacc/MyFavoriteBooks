@@ -25,7 +25,14 @@ struct NewBookView: View {
             .navigationTitle("Got a new book?")
             .toolbar {
                 ToolbarItem(placement: .status) {
-                    
+                    Button("Add to library") {
+                        library.addNewBook(book, image: image)
+                        dismiss()
+                    }
+                    .disabled(
+                        [book.title, book.author]
+                            .contains(where: \.isEmpty)
+                    )
                 }
             }
         }

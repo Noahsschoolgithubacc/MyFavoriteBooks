@@ -17,7 +17,10 @@ class Book: ObservableObject {
     @Published var microReview: String
     @Published var myFavoriteBooks: Bool
     
-    init(title: String = "Title", author: String = "Author", microReview: String = "", myFavoriteBooks: Bool = true) {
+    init(title: String = "Title",
+         author: String = "Author",
+         microReview: String = "",
+         myFavoriteBooks: Bool = true) {
         self.title = title
         self.author = author
         self.microReview = microReview
