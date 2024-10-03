@@ -9,6 +9,9 @@ import SwiftUI
 
 @main
 struct MyFavoriteBooksApp: App {
+    
+    @StateObject private var library = Library()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

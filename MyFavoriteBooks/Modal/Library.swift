@@ -58,7 +58,7 @@ class Library: ObservableObject {
             }
         }
     }
-    
+    // it moves books
     func moveBooks(oldOffSets: IndexSet, newOffSet: Int, section: Section) {
         sortedBooks[section]?.move(fromOffsets: oldOffSets, toOffset: newOffSet)
     }
